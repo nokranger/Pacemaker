@@ -83,7 +83,7 @@
 </div>
 </template>
 <script>
-let connection = new WebSocket('ws://localhost:4040')
+import { connection } from '/VueJS/Websocket/pacemaker/src/router'
 export default {
   data () {
     return {
@@ -101,21 +101,21 @@ export default {
       status: '',
       max: 0,
       S_plan: 0,
-      S_actual: 0,
+      S_actual: 0
     }
   },
   created () {
     let vm = this
     vm.S_plan = 0
     vm.S_actual = 0
-    connection.onopen = function () {
-      // จะทำงานเมื่อเชื่อมต่อสำเร็จ
-      // console.log('connect webSocket')
-      connection.send(JSON.stringify({ 'protocol': 'change_page', 'data': { 'page': 'C1' } }))
-    }
-    connection.onerror = function (error) {
-      console.error('WebSocket Error ' + error)
-    }
+
+    const waitConnect = setInterval(() => {
+      if (connection.readyState === 1) {
+        connection.send(JSON.stringify({ 'protocol': 'change_page', 'data': { 'page': 'C1' } }))
+        clearInterval(waitConnect)
+      }
+    }, 100)
+
     connection.onmessage = function (e) {
       let res = JSON.parse(e.data)
       vm.getData(res)
@@ -218,27 +218,17 @@ export default {
     },
     STOPSV () {
       console.log('stop')
-      connection.onopen = function () {
-        // จะทำงานเมื่อเชื่อมต่อสำเร็จ
-        // console.log('connect webSocket')
-        connection.send(JSON.stringify({ 'protocol': 'pace_maker_status', 'data': { 'bay': 'C1', 'status': 'STOP_WARNING' } })) // ส่ง Data ไปที่ Server
-      }
-      connection.onerror = function (error) {
-        console.error('WebSocket Error ' + error)
-      }
+      // connection.onopen = function () {
+      // จะทำงานเมื่อเชื่อมต่อสำเร็จ
+      // console.log('error connect webSocket')
+      connection.send(JSON.stringify({ 'protocol': 'pace_maker_status', 'data': { 'bay': 'C1', 'status': 'STOP_WARNING' } })) // ส่ง Data ไปที่ Server
     },
     HELPSV () {
       console.log('help')
-      connection.onopen = function () {
-        console.log('help2')
-        // จะทำงานเมื่อเชื่อมต่อสำเร็จ
-        // console.log('connect webSocket')
-        connection.send(JSON.stringify({ 'protocol': 'pace_maker_status', 'data': { 'bay': 'C1', 'status': 'HELP' } })) // ส่ง Data ไปที่ Server
-      }
-      connection.onerror = function (error) {
-        console.error('WebSocket Error ' + error)
-      }
-    },
+      // จะทำงานเมื่อเชื่อมต่อสำเร็จ
+      // console.log('connect webSocket')
+      connection.send(JSON.stringify({ 'protocol': 'pace_maker_status', 'data': { 'bay': 'C1', 'status': 'HELP' } })) // ส่ง Data ไปที่ Server
+    }
   },
   directives: {
     rainbow: {
