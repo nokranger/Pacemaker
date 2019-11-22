@@ -2,10 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 // import Home from './views/Home.vue'
 import Pacemaker from './views/Pacemaker.vue'
-export let connection = new WebSocket('ws://localhost:4040')
-connection.onerror = function (error) {
-  console.error('WebSocket Error ' + error)
-}
 
 Vue.use(Router)
 
