@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id='div_main'>
     <meta charset="utf-8">
     <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport">
     <div class="layoutP">
@@ -49,11 +49,11 @@
                 </b-progress><br>
               </b-col>
               <b-col>
-                <div id="traffic-light">
+                <!-- <div id="traffic-light">
                   <input type="radio" name="traffic-light-color" id="color1" value="color1" />
                   <input type="radio" name="traffic-light-color" id="color2" value="color2"/>
                   <input type="radio" name="traffic-light-color" id="color3" value="color3" />
-                </div>
+                </div> -->
               </b-col>
             </b-row>
           </div>
@@ -101,7 +101,8 @@ export default {
       status: '',
       max: 0,
       S_plan: 0,
-      S_actual: 0
+      S_actual: 0,
+      bg_color: ''
     }
   },
   created () {
@@ -153,65 +154,69 @@ export default {
       } else if (this.status === 'DELAY') { //  red
         setRed()
       } else if (this.status === 'HELP') { //  red
-        setRed()
+        setYellow()
       } else if (this.status === 'STOP_WARNING') { //  green
         setGreen()
       }
       function setRed () {
         console.log('red')
-        document.getElementById('color1').style.animation = '1s step-end infinite'
-        document.getElementById('color1').style.backgroundColor = '#FF0000'
-        document.getElementById('color1').style.boxShadow = '0 0 6em #ff3333'
+        document.getElementById('div_main').style.backgroundColor = '#FF0000'
+        // document.getElementById('color1').style.animation = '1s step-end infinite'
+        // document.getElementById('color1').style.backgroundColor = '#FF0000'
+        // document.getElementById('color1').style.boxShadow = '0 0 6em #ff3333'
 
-        document.getElementById('color2').style.animation = '1s step-end infinite'
-        document.getElementById('color2').style.backgroundColor = '#5e5e00'
-        document.getElementById('color2').style.boxShadow = '0 0 0em transparent'
+        // document.getElementById('color2').style.animation = '1s step-end infinite'
+        // document.getElementById('color2').style.backgroundColor = '#5e5e00'
+        // document.getElementById('color2').style.boxShadow = '0 0 0em transparent'
 
-        document.getElementById('color3').style.animation = '1s step-end infinite'
-        document.getElementById('color3').style.backgroundColor = '#005f00'
-        document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
+        // document.getElementById('color3').style.animation = '1s step-end infinite'
+        // document.getElementById('color3').style.backgroundColor = '#005f00'
+        // document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
       }
       function setGreen () {
         console.log('green')
-        document.getElementById('color3').style.animation = '1s step-end infinite'
-        document.getElementById('color3').style.backgroundColor = '#00FF00'
-        document.getElementById('color3').style.boxShadow = '0 0 6em #33ff33'
+        document.getElementById('div_main').style.backgroundColor = '#00ff00'
+        // document.getElementById('color3').style.animation = '1s step-end infinite'
+        // document.getElementById('color3').style.backgroundColor = '#00FF00'
+        // document.getElementById('color3').style.boxShadow = '0 0 6em #33ff33'
 
-        document.getElementById('color2').style.animation = '1s step-end infinite'
-        document.getElementById('color2').style.backgroundColor = '#5e5e00'
-        document.getElementById('color2').style.boxShadow = '0 0 0em transparent'
+        // document.getElementById('color2').style.animation = '1s step-end infinite'
+        // document.getElementById('color2').style.backgroundColor = '#5e5e00'
+        // document.getElementById('color2').style.boxShadow = '0 0 0em transparent'
 
-        document.getElementById('color1').style.animation = '1s step-end infinite'
-        document.getElementById('color1').style.backgroundColor = '#570000'
-        document.getElementById('color1').style.boxShadow = '0 0 0em transparent'
+        // document.getElementById('color1').style.animation = '1s step-end infinite'
+        // document.getElementById('color1').style.backgroundColor = '#570000'
+        // document.getElementById('color1').style.boxShadow = '0 0 0em transparent'
       }
       function setYellow () {
         console.log('yellow')
-        document.getElementById('color2').style.animation = '1s step-end infinite'
-        document.getElementById('color2').style.backgroundColor = '#FFFF00'
-        document.getElementById('color2').style.boxShadow = '0 0 6em #ffff33'
+        document.getElementById('div_main').style.backgroundColor = '#FFFF00'
+        // document.getElementById('color2').style.animation = '1s step-end infinite'
+        // document.getElementById('color2').style.backgroundColor = '#FFFF00'
+        // document.getElementById('color2').style.boxShadow = '0 0 6em #ffff33'
 
-        document.getElementById('color1').style.animation = '1s step-end infinite'
-        document.getElementById('color1').style.backgroundColor = '#570000'
-        document.getElementById('color1').style.boxShadow = '0 0 0em transparent'
+        // document.getElementById('color1').style.animation = '1s step-end infinite'
+        // document.getElementById('color1').style.backgroundColor = '#570000'
+        // document.getElementById('color1').style.boxShadow = '0 0 0em transparent'
 
-        document.getElementById('color3').style.animation = '1s step-end infinite'
-        document.getElementById('color3').style.backgroundColor = '#005f00'
-        document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
+        // document.getElementById('color3').style.animation = '1s step-end infinite'
+        // document.getElementById('color3').style.backgroundColor = '#005f00'
+        // document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
       }
       function setNolight () {
         console.log('nolight')
-        document.getElementById('color2').style.animation = '1s step-end infinite'
-        document.getElementById('color2').style.backgroundColor = '#5e5e00'
-        document.getElementById('color2').style.boxShadow = '0 0 0em transparent'
+        document.getElementById('div_main').style.backgroundColor = '#FFFFFF'
+        // document.getElementById('color2').style.animation = '1s step-end infinite'
+        // document.getElementById('color2').style.backgroundColor = '#5e5e00'
+        // document.getElementById('color2').style.boxShadow = '0 0 0em transparent'
 
-        document.getElementById('color1').style.animation = '1s step-end infinite'
-        document.getElementById('color1').style.backgroundColor = '#570000'
-        document.getElementById('color1').style.boxShadow = '0 0 0em transparent'
+        // document.getElementById('color1').style.animation = '1s step-end infinite'
+        // document.getElementById('color1').style.backgroundColor = '#570000'
+        // document.getElementById('color1').style.boxShadow = '0 0 0em transparent'
 
-        document.getElementById('color3').style.animation = '1s step-end infinite'
-        document.getElementById('color3').style.backgroundColor = '#005f00'
-        document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
+        // document.getElementById('color3').style.animation = '1s step-end infinite'
+        // document.getElementById('color3').style.backgroundColor = '#005f00'
+        // document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
       }
     },
     STOPSV () {
