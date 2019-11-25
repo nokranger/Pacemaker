@@ -2,6 +2,15 @@
 <div id='div_main'>
     <meta charset="utf-8">
     <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport">
+    <audio id="fivemin">
+      <source src="@/assets/audio/5min.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="threemin">
+      <source src="@/assets/audio/3min.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="delaysound">
+      <source src="@/assets/audio/delay.mp3" type="audio/mpeg">
+    </audio>
     <div class="layoutP">
       <div style="text-align:center">
         <b-row class="text-center">
@@ -66,6 +75,8 @@
             </b-row>
           </div>
           <br>
+          <button v-on:click="Audio5Min ()">Play</button>
+          <button v-on:click="Audio3Min ()">Play</button>
           <div class="layoutButton">
             <b-row class="text-center">
               <b-col cols="5"><b-button class="buttonOk" v-on:click="STOPSV ()" variant="success">STOP</b-button></b-col>
@@ -101,8 +112,7 @@ export default {
       status: '',
       max: 0,
       S_plan: 0,
-      S_actual: 0,
-      bg_color: ''
+      S_actual: 0
     }
   },
   created () {
@@ -145,6 +155,12 @@ export default {
       this.S_plan = sp
       this.S_actual = sa
 
+      if ((this.S_plan - this.S_actual) > 5) {
+        this.Audio5Min()
+      } else if ((this.S_plan - this.S_actual) > 3) {
+        this.Audio3Min()
+      }
+
       if (this.status === 'NO_WORKING') { // no light
         setNolight()
       } else if (this.status === 'WORKING') { //  green
@@ -153,6 +169,7 @@ export default {
         setYellow()
       } else if (this.status === 'DELAY') { //  red
         setRed()
+        this.AudioDelay()
       } else if (this.status === 'HELP') { //  red
         setYellow()
       } else if (this.status === 'STOP_WARNING') { //  green
@@ -231,6 +248,18 @@ export default {
       // จะทำงานเมื่อเชื่อมต่อสำเร็จ
       // console.log('connect webSocket')
       connection.send(JSON.stringify({ 'protocol': 'pace_maker_status', 'data': { 'bay': 'C1', 'status': 'HELP' } })) // ส่ง Data ไปที่ Server
+    },
+    Audio5Min () {
+      let fivemin = document.getElementById('fivemin')
+      fivemin.play()
+    },
+    Audio3Min () {
+      let threemin = document.getElementById('threemin')
+      threemin.play()
+    },
+    AudioDelay () {
+      let delaysound = document.getElementById('delaysound')
+      delaysound.play()
     }
   },
   directives: {
