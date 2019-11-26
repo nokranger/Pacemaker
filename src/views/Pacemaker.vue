@@ -1,5 +1,5 @@
 <template>
-<div id="div_main" class="full-height" style="background-color:lightblue">
+<div id="div_main" class="full-height">
     <meta charset="utf-8">
     <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport">
     <audio id="fivemin">
@@ -112,7 +112,10 @@ export default {
       status: '',
       max: 0,
       S_plan: 0,
-      S_actual: 0
+      S_actual: 0,
+      warning_5_mins: false,
+      warning_3_mins: false,
+      warning_delay: false
     }
   },
   created () {
@@ -155,18 +158,24 @@ export default {
       this.S_plan = sp
       this.S_actual = sa
 
-      if ((this.S_plan - this.S_actual) < 5) {
+      if (!this.warning_5_mins && (this.S_plan - this.S_actual) < 5) {
         this.Audio5Min()
-      } else if ((this.S_plan - this.S_actual) < 3) {
+        this.warning_5_mins = true
+      } else if (!this.warning_3_mins && (this.S_plan - this.S_actual) < 3) {
         this.Audio3Min()
-      } else if (this.S_plan < this.S_actual) {
+        this.warning_3_mins = true
+      } else if (!this.warning_delay && this.S_plan < this.S_actual) {
         this.AudioDelay()
+        this.warning_delay = true
       }
       document.getElementById('btnConfirmHelp').disabled = true
       document.getElementById('btnNeedHelp').disabled = false
 
       if (this.status === 'NO_WORKING') { // no light
         setNolight()
+        this.warning_5_mins = false
+        this.warning_3_mins = false
+        this.warning_delay = false
       } else if (this.status === 'WORKING') { //  green
         setGreen()
       } else if (this.status === 'WARNING') { //  yellow
