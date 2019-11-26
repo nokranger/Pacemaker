@@ -178,3 +178,7 @@ input#color3:checked {
   padding: 18px 150px;
   width: 100%;
 }
+.full-height {
+  height: 100%;
+  width: 100%;
+}
