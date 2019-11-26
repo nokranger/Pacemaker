@@ -1,5 +1,5 @@
 <template>
-<div id='div_main'>
+<div id="div_main">
     <meta charset="utf-8">
     <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport">
     <audio id="fivemin">
@@ -75,13 +75,13 @@
             </b-row>
           </div>
           <br>
-          <button v-on:click="Audio5Min ()">Play</button>
-          <button v-on:click="Audio3Min ()">Play</button>
+          <!-- <button v-on:click="Audio5Min ()">Play</button>
+          <button v-on:click="Audio3Min ()">Play</button> -->
           <div class="layoutButton">
             <b-row class="text-center">
-              <b-col cols="5"><b-button class="buttonOk" v-on:click="STOPSV ()" variant="success">STOP</b-button></b-col>
+              <b-col cols="5"><b-button id="btnConfirmHelp" class="buttonConfirmHelp" v-on:click="sendConfirmHelp ()" variant="success">คอนเฟิร์มการช่วยเเหลือ</b-button></b-col>
               <b-col cols="2"></b-col>
-              <b-col cols="5"><b-button class="buttonHelp" v-on:click="HELPSV ()" variant="warning">HELP</b-button></b-col>
+              <b-col cols="5"><b-button id="btnNeedHelp" class="buttonNeedHelp" v-on:click="sendNeedHelp ()" variant="warning">ต้องการความช่วยเหลือ</b-button></b-col>
               <br>
             </b-row>
           </div>
@@ -155,11 +155,17 @@ export default {
       this.S_plan = sp
       this.S_actual = sa
 
-      if ((this.S_plan - this.S_actual) > 5) {
+      if ((this.S_plan - this.S_actual) < 5) {
         this.Audio5Min()
-      } else if ((this.S_plan - this.S_actual) > 3) {
+      } else if ((this.S_plan - this.S_actual) < 3) {
         this.Audio3Min()
       }
+      else if (this.S_plan < this.S_actual) {
+        this.AudioDelay()
+      }
+
+      document.getElementById('btnConfirmHelp').disabled = true
+      document.getElementById('btnNeedHelp').disabled = false
 
       if (this.status === 'NO_WORKING') { // no light
         setNolight()
@@ -169,10 +175,12 @@ export default {
         setYellow()
       } else if (this.status === 'DELAY') { //  red
         setRed()
-        this.AudioDelay()
-      } else if (this.status === 'HELP') { //  red
+
+      } else if (this.status === 'NEED_HELP') { //  yellow
         setYellow()
-      } else if (this.status === 'STOP_WARNING') { //  green
+        document.getElementById('btnConfirmHelp').disabled = false
+        document.getElementById('btnNeedHelp').disabled = true
+      } else if (this.status === 'CONFIRM_HELP') { //  green
         setGreen()
       }
       function setRed () {
@@ -236,18 +244,18 @@ export default {
         // document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
       }
     },
-    STOPSV () {
-      console.log('stop')
+    sendConfirmHelp () {
+      console.log('confirm help')
       // connection.onopen = function () {
       // จะทำงานเมื่อเชื่อมต่อสำเร็จ
       // console.log('error connect webSocket')
-      connection.send(JSON.stringify({ 'protocol': 'pace_maker_status', 'data': { 'bay': 'C1', 'status': 'STOP_WARNING' } })) // ส่ง Data ไปที่ Server
+      connection.send(JSON.stringify({ 'protocol': 'pace_maker_status', 'data': { 'bay': 'C1', 'status': 'CONFIRM_HELP' } })) // ส่ง Data ไปที่ Server
     },
-    HELPSV () {
-      console.log('help')
+    sendNeedHelp () {
+      console.log('need help')
       // จะทำงานเมื่อเชื่อมต่อสำเร็จ
       // console.log('connect webSocket')
-      connection.send(JSON.stringify({ 'protocol': 'pace_maker_status', 'data': { 'bay': 'C1', 'status': 'HELP' } })) // ส่ง Data ไปที่ Server
+      connection.send(JSON.stringify({ 'protocol': 'pace_maker_status', 'data': { 'bay': 'C1', 'status': 'NEED_HELP' } })) // ส่ง Data ไปที่ Server
     },
     Audio5Min () {
       let fivemin = document.getElementById('fivemin')
