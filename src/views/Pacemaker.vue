@@ -159,11 +159,9 @@ export default {
         this.Audio5Min()
       } else if ((this.S_plan - this.S_actual) < 3) {
         this.Audio3Min()
-      }
-      else if (this.S_plan < this.S_actual) {
+      } else if (this.S_plan < this.S_actual) {
         this.AudioDelay()
       }
-
       document.getElementById('btnConfirmHelp').disabled = true
       document.getElementById('btnNeedHelp').disabled = false
 
@@ -175,7 +173,6 @@ export default {
         setYellow()
       } else if (this.status === 'DELAY') { //  red
         setRed()
-
       } else if (this.status === 'NEED_HELP') { //  yellow
         setYellow()
         document.getElementById('btnConfirmHelp').disabled = false
