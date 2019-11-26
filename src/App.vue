@@ -1,14 +1,19 @@
 <template>
   <div id="app" v-bind:style="{ backgroundColor: color}">
+    <pacemaker></pacemaker>
     <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div> -->
-    <router-view/>
+    <!-- <router-view/> -->
   </div>
 </template>
 <script>
+import pacemaker from './views/Pacemaker'
 export default {
+  components: {
+    'pacemaker': pacemaker
+  },
   data () {
     return {
       // color: '#f4f5f7'
