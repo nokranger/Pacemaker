@@ -162,7 +162,6 @@ export default {
       } else if (this.S_plan < this.S_actual) {
         this.AudioDelay()
       }
-
       document.getElementById('btnConfirmHelp').disabled = true
       document.getElementById('btnNeedHelp').disabled = false
 
