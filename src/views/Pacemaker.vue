@@ -1,97 +1,183 @@
 <template>
-<div id="div_main" class="full-height">
-    <meta charset="utf-8">
-    <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport">
+  <div id="div_main" class="full-height">
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport" />
     <audio id="fivemin">
-      <source src="@/assets/audio/5min.mp3" type="audio/mpeg">
+      <source src="@/assets/audio/5min.mp3" type="audio/mpeg" />
     </audio>
     <audio id="threemin">
-      <source src="@/assets/audio/3min.mp3" type="audio/mpeg">
+      <source src="@/assets/audio/3min.mp3" type="audio/mpeg" />
     </audio>
     <audio id="delaysound">
-      <source src="@/assets/audio/delay.mp3" type="audio/mpeg">
+      <source src="@/assets/audio/delay.mp3" type="audio/mpeg" />
     </audio>
     <div class="layoutP">
       <div style="text-align:center">
         <b-row class="text-center">
           <b-col cols="1"></b-col>
-          <b-col class="layoutVO" cols="5"><br><label>VIN : {{ VIN }}</label><br></b-col>
-          <b-col class="layoutVO" cols="5"><br><label>OPTION GROUP : {{OPTION_GROUP}}</label><br></b-col>
+          <b-col class="layoutVO" cols="5">
+            <br />
+            <label>VIN : {{ VIN }}</label>
+            <br />
+          </b-col>
+          <b-col class="layoutVO" cols="5">
+            <br />
+            <label>OPTION GROUP : {{OPTION_GROUP}}</label>
+            <br />
+          </b-col>
           <b-col cols="1"></b-col>
-          <br>
+          <br />
         </b-row>
       </div>
     </div>
     <div class="layoutP">
+      <div>
         <div>
-          <div>
-            <b-row class="text-center">
-              <b-col><label class="layoutPA"><label class="m5">PLAN : <label id="s_plan">{{S_plan}}</label></label></label></b-col>
-              <b-col cols="8">
-                  <h1 id="P_time" v-for="(plan_times, index) in plan_time" :key="index" v-rainbow="index"><h1 class="m5">P{{index}} : {{plan_times}} </h1></h1>
-              </b-col>
-              <b-col></b-col>
-            </b-row>
-          </div>
+          <b-row class="text-center">
+            <b-col>
+              <label class="layoutPA">
+                <label class="m5">
+                  PLAN :
+                  <label id="s_plan">{{S_plan}}</label>
+                </label>
+              </label>
+            </b-col>
+            <b-col cols="8">
+              <h1
+                id="P_time"
+                v-for="(plan_times, index) in plan_time"
+                :key="index"
+                v-rainbow="index"
+              >
+                <h1 class="m5">P{{index}} : {{plan_times}}</h1>
+              </h1>
+            </b-col>
+            <b-col></b-col>
+          </b-row>
+        </div>
+      </div>
+      <div>
+        <div>
+          <b-row class="text-center">
+            <b-col></b-col>
+            <b-col cols="8">
+              <br />
+              <b-progress
+                class="mt-2"
+                :max="S_plan"
+                height="4rem"
+                show-value
+                show-progress
+                animated
+              >
+                <b-progress-bar
+                  v-for="(plan_times, index) in plan_time"
+                  :key="index"
+                  :value="plan_times"
+                  :variant="index % 5 === 0 ? 'warning' : index % 4 === 0 ? 'success' : index % 3 === 0 ? 'danger' : index % 2 === 0 ? 'primary' : index % 1 === 0 ? 'secondary' : 'dark'"
+                >
+                  <strong>{{plan_times}}</strong>
+                </b-progress-bar>
+              </b-progress>
+              <br />
+            </b-col>
+            <b-col></b-col>
+          </b-row>
         </div>
         <div>
-          <div>
-            <b-row class="text-center">
-              <b-col></b-col>
-              <b-col cols="8">
-                <br>
-                <b-progress class="mt-2" :max="S_plan" height="4rem" show-value  show-progress animated>
-                <b-progress-bar v-for="(plan_times, index) in plan_time" :key="index" :value="plan_times" :variant="index % 5 === 0 ? 'warning' : index % 4 === 0 ? 'success' : index % 3 === 0 ? 'danger' : index % 2 === 0 ? 'primary' : index % 1 === 0 ? 'secondary' : 'dark'"><strong>{{plan_times}}</strong></b-progress-bar>
-                </b-progress><br>
-              </b-col>
-              <b-col>
-              </b-col>
-            </b-row>
-          </div>
-          <div>
-            <b-row class="text-center">
-              <b-col><br><label class="layoutPA"><label class="m5"> ACTUAL : <label id="s_actual">{{S_actual}}</label></label></label></b-col>
-              <b-col cols="8">
-                <br>
-                <b-progress class="mt-2" :max="S_actual" height="4rem" show-value  show-progress animated>
-                <b-progress-bar v-for="(actual_times, index) in actual_time" :key="index" :value="actual_times" :variant="index % 5 === 0 ? 'warning' : index % 4 === 0 ? 'success' : index % 3 === 0 ? 'danger' : index % 2 === 0 ? 'primary' : index % 1 === 0 ? 'secondary' : 'dark'"><strong>{{actual_times}}</strong></b-progress-bar>
-                </b-progress><br>
-              </b-col>
-              <b-col>
-                <!-- <div id="traffic-light">
+          <b-row class="text-center">
+            <b-col>
+              <br />
+              <label class="layoutPA">
+                <label class="m5">
+                  ACTUAL :
+                  <label id="s_actual">{{S_actual}}</label>
+                </label>
+              </label>
+            </b-col>
+            <b-col cols="8">
+              <br />
+              <b-progress
+                class="mt-2"
+                :max="S_plan"
+                height="4rem"
+                show-value
+                show-progress
+                animated
+              >
+                <b-progress-bar
+                  v-for="(actual_times, index) in actual_time"
+                  :key="index"
+                  :value="actual_times"
+                  :variant="index % 5 === 0 ? 'warning' : index % 4 === 0 ? 'success' : index % 3 === 0 ? 'danger' : index % 2 === 0 ? 'primary' : index % 1 === 0 ? 'secondary' : 'dark'"
+                >
+                  <strong>{{actual_times}}</strong>
+                </b-progress-bar>
+              </b-progress>
+              <br />
+            </b-col>
+            <b-col>
+              <!-- <div id="traffic-light">
                   <input type="radio" name="traffic-light-color" id="color1" value="color1" />
                   <input type="radio" name="traffic-light-color" id="color2" value="color2"/>
                   <input type="radio" name="traffic-light-color" id="color3" value="color3" />
-                </div> -->
-              </b-col>
-            </b-row>
-          </div>
-          <div class="layoutButton">
-            <b-row class="text-center">
-              <b-col class="start"  cols="3.5"><br><label class="m5">Start : {{start_time}}</label><br><br></b-col>
-              <b-col class="finish" cols="3.5"><br><label class="m5">Finish : {{finish_time}}</label><br><br></b-col>
-              <b-col class="diff" cols="3.5"><br><label class="m5">Diff : {{S_plan - S_actual}}</label><br><br></b-col>
-              <br>
-            </b-row>
-          </div>
-          <br>
-          <!-- <button v-on:click="Audio5Min ()">Play</button>
-          <button v-on:click="Audio3Min ()">Play</button> -->
-          <div class="layoutButton">
-            <b-row class="text-center">
-              <b-col cols="5"><b-button id="btnConfirmHelp" class="buttonConfirmHelp" v-on:click="sendConfirmHelp ()" variant="success">คอนเฟิร์มการช่วยเเหลือ</b-button></b-col>
-              <b-col cols="2"></b-col>
-              <b-col cols="5"><b-button id="btnNeedHelp" class="buttonNeedHelp" v-on:click="sendNeedHelp ()" variant="warning">ต้องการความช่วยเหลือ</b-button></b-col>
-              <br>
-            </b-row>
-          </div>
-        <div>
+              </div>-->
+            </b-col>
+          </b-row>
         </div>
-          <div>
-          </div>
+        <div class="layoutButton">
+          <b-row class="text-center">
+            <b-col class="start" cols="3.5">
+              <br />
+              <label class="m5">Start : {{start_time}}</label>
+              <br />
+              <br />
+            </b-col>
+            <b-col class="finish" cols="3.5">
+              <br />
+              <label class="m5">Finish : {{finish_time}}</label>
+              <br />
+              <br />
+            </b-col>
+            <b-col class="diff" cols="3.5">
+              <br />
+              <label class="m5">Diff : {{S_plan - S_actual}}</label>
+              <br />
+              <br />
+            </b-col>
+            <br />
+          </b-row>
         </div>
+        <br />
+        <!-- <button v-on:click="Audio5Min ()">Play</button>
+        <button v-on:click="Audio3Min ()">Play</button>-->
+        <div class="layoutButton">
+          <b-row class="text-center">
+            <b-col cols="5">
+              <b-button
+                id="btnConfirmHelp"
+                class="buttonConfirmHelp"
+                v-on:click="sendConfirmHelp ()"
+                variant="success"
+              >คอนเฟิร์มการช่วยเเหลือ</b-button>
+            </b-col>
+            <b-col cols="2"></b-col>
+            <b-col cols="5">
+              <b-button
+                id="btnNeedHelp"
+                class="buttonNeedHelp"
+                v-on:click="sendNeedHelp ()"
+                variant="warning"
+              >ต้องการความช่วยเหลือ</b-button>
+            </b-col>
+            <br />
+          </b-row>
+        </div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
-</div>
+  </div>
 </template>
 <script>
 import { connection } from './connection'
@@ -124,17 +210,20 @@ export default {
     vm.S_actual = 0
     const waitConnect = setInterval(() => {
       if (connection.readyState === 1) {
-        connection.send(JSON.stringify({ 'protocol': 'change_page', 'data': { 'page': 'C1' } }))
+        connection.send(
+          JSON.stringify({ protocol: 'change_page', data: { page: 'C1' } })
+        )
         clearInterval(waitConnect)
       }
     }, 100)
     connection.onmessage = function (e) {
       let res = JSON.parse(e.data)
-      vm.getData(res)
+      if (res.protocol === 'pace_maker_info') {
+        vm.getData(res)
+      }
     }
   },
-  updated () {
-  },
+  updated () {},
   methods: {
     getData (res) {
       let data = res.data
@@ -158,35 +247,44 @@ export default {
       this.S_plan = sp
       this.S_actual = sa
 
-      if (!this.warning_5_mins && (this.S_plan - this.S_actual) < 5) {
-        this.Audio5Min()
-        this.warning_5_mins = true
-      } else if (!this.warning_3_mins && (this.S_plan - this.S_actual) < 3) {
-        this.Audio3Min()
-        this.warning_3_mins = true
-      } else if (!this.warning_delay && this.S_plan < this.S_actual) {
-        this.AudioDelay()
-        this.warning_delay = true
+      if (this.status === 'NO_WORKING') {
+        if (!this.warning_5_mins && this.S_plan - this.S_actual <= 5) {
+          this.Audio5Min()
+          this.warning_5_mins = true
+        } else if (!this.warning_3_mins && this.S_plan - this.S_actual <= 3) {
+          this.Audio3Min()
+          this.warning_3_mins = true
+        } else if (!this.warning_delay && this.S_plan <= this.S_actual) {
+          this.AudioDelay()
+          this.warning_delay = true
+        }
       }
+
       document.getElementById('btnConfirmHelp').disabled = true
       document.getElementById('btnNeedHelp').disabled = false
 
-      if (this.status === 'NO_WORKING') { // no light
+      if (this.status === 'NO_WORKING') {
+        // no light
         setNolight()
         this.warning_5_mins = false
         this.warning_3_mins = false
         this.warning_delay = false
-      } else if (this.status === 'WORKING') { //  green
+      } else if (this.status === 'WORKING') {
+        //  green
         setGreen()
-      } else if (this.status === 'WARNING') { //  yellow
+      } else if (this.status === 'WARNING') {
+        //  yellow
         setYellow()
-      } else if (this.status === 'DELAY') { //  red
+      } else if (this.status === 'DELAY') {
+        //  red
         setRed()
-      } else if (this.status === 'NEED_HELP') { //  yellow
+      } else if (this.status === 'NEED_HELP') {
+        //  yellow
         setYellow()
         document.getElementById('btnConfirmHelp').disabled = false
         document.getElementById('btnNeedHelp').disabled = true
-      } else if (this.status === 'CONFIRM_HELP') { //  green
+      } else if (this.status === 'CONFIRM_HELP') {
+        //  green
         setGreen()
       }
       function setRed () {
@@ -255,13 +353,23 @@ export default {
       // connection.onopen = function () {
       // จะทำงานเมื่อเชื่อมต่อสำเร็จ
       // console.log('error connect webSocket')
-      connection.send(JSON.stringify({ 'protocol': 'pace_maker_status', 'data': { 'bay': 'C1', 'status': 'CONFIRM_HELP' } })) // ส่ง Data ไปที่ Server
+      connection.send(
+        JSON.stringify({
+          protocol: 'pace_maker_status',
+          data: { bay: 'C1', status: 'CONFIRM_HELP' }
+        })
+      ) // ส่ง Data ไปที่ Server
     },
     sendNeedHelp () {
       console.log('need help')
       // จะทำงานเมื่อเชื่อมต่อสำเร็จ
       // console.log('connect webSocket')
-      connection.send(JSON.stringify({ 'protocol': 'pace_maker_status', 'data': { 'bay': 'C1', 'status': 'NEED_HELP' } })) // ส่ง Data ไปที่ Server
+      connection.send(
+        JSON.stringify({
+          protocol: 'pace_maker_status',
+          data: { bay: 'C1', status: 'NEED_HELP' }
+        })
+      ) // ส่ง Data ไปที่ Server
     },
     Audio5Min () {
       let fivemin = document.getElementById('fivemin')
@@ -300,5 +408,4 @@ export default {
 </script>
 <style scoped src="@/assets/css/pacemaker.css">
 /* @import './assets/css/pacemaker.css'; */
-
 </style>
