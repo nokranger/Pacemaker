@@ -247,7 +247,7 @@ export default {
       this.S_plan = sp
       this.S_actual = sa
 
-      if (this.status === 'NO_WORKING') {
+      if (this.status !== 'NO_WORKING') {
         if (!this.warning_5_mins && this.S_plan - this.S_actual <= 5) {
           this.Audio5Min()
           this.warning_5_mins = true
@@ -374,14 +374,17 @@ export default {
     Audio5Min () {
       let fivemin = document.getElementById('fivemin')
       fivemin.play()
+      console.log('fivemin')
     },
     Audio3Min () {
       let threemin = document.getElementById('threemin')
       threemin.play()
+      console.log('threemin')
     },
     AudioDelay () {
       let delaysound = document.getElementById('delaysound')
       delaysound.play()
+      console.log('delaysound')
     }
   },
   directives: {
