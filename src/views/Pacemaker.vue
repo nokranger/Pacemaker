@@ -215,26 +215,20 @@ export default {
     }
   },
   created () {
-    console.log('test')
     let vm = this
     vm.S_plan = 0
     vm.S_actual = 0
     const waitConnect = setInterval(() => {
-      console.log('test2')
       if (connection.readyState === 1) {
         connection.send(
           JSON.stringify({ protocol: 'change_page', data: { page: 'C1' } })
         )
-        console.log('test3')
         clearInterval(waitConnect)
-        console.log('test4')
       }
     }, 100)
     connection.onmessage = function (e) {
-      console.log('test5')
       let res = JSON.parse(e.data)
       if (res.protocol === 'pace_maker_info') {
-        console.log('test6')
         vm.getData(res)
       }
     }
