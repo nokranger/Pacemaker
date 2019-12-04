@@ -122,17 +122,40 @@ input#color3:checked {
   background: #33c7f7;
   margin:5px;
   color:white;
+  padding: 30px 30px;
 }
 .layoutPA {
   border: solid 2px #E0e0e0;
   background-color: white;
   margin:5px;
+  padding: 20px 50px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.fontVO {
+  font-size: 30px;
+  font-weight: bold;
+}
+.fontPA {
+  font-size: 25px;
+  font-weight: bold;
+  display: inline-block;
+  /* text-overflow: ellipsis; 
+  overflow: hidden; 
+  white-space: nowrap; */
+}
+.fontButton{
+  font-size: 18px;
+  font-weight: bold;
+  display: inline-block;
+  text-align: left;
 }
 .layoutButton {
   display: flex;
   height: 100%;
   justify-content: center;
   align-items: center;
+  padding: 15px 30px;
 }
 .start {
   border: solid 2px #E0e0e0;
@@ -156,27 +179,29 @@ input#color3:checked {
   border: none;
   text-align: center;
   text-decoration: none;
-  display: block;
-  font-size: 16px;
+  display: inline-block;
+  font-size: 30px;
   font-weight: bold;
   color: black;
   margin: 4px 2px;
   cursor: pointer;
-  padding: 18px 150px;
+  padding:30px 150px 30px 70px;
   width: 100%;
+  white-space: nowrap;
 }
 .buttonNeedHelp {
   border: none;
   text-align: center;
   text-decoration: none;
-  display: block;
-  font-size: 16px;
+  display: inline-block;
+  font-size: 30px;
   font-weight: bold;
   color: black;
   margin: 4px 2px;
   cursor: pointer;
-  padding: 18px 150px;
+  padding:30px 150px 30px 70px;
   width: 100%;
+  white-space: nowrap;
 }
 .full-height {
   height: 100%;

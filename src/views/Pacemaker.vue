@@ -17,12 +17,12 @@
           <b-col cols="1"></b-col>
           <b-col class="layoutVO" cols="5">
             <br />
-            <label>VIN : {{ VIN }}</label>
+            <div class="fontVO">VIN : {{ VIN }}</div>
             <br />
           </b-col>
           <b-col class="layoutVO" cols="5">
             <br />
-            <label>OPTION GROUP : {{OPTION_GROUP}}</label>
+            <div class="fontVO">OPTION GROUP : {{OPTION_GROUP}}</div >
             <br />
           </b-col>
           <b-col cols="1"></b-col>
@@ -35,24 +35,34 @@
         <div>
           <b-row class="text-center">
             <b-col>
-              <label class="layoutPA">
-                <label class="m5">
+              <div class="layoutPA">
+                <div class="m5 fontPA">
                   PLAN :
-                  <label id="s_plan">{{S_plan}}</label>
-                </label>
-              </label>
+                </div>
+                <div id="s_plan" class=" m5 fontPA">{{S_plan}}</div>
+              </div>
             </b-col>
             <b-col cols="8">
-              <h1
-                id="P_time"
-                v-for="(plan_times, index) in plan_time"
-                :key="index"
-                v-rainbow="index"
+              <b-progress
+                class="mt-2"
+                :max="S_plan"
+                height="5.5rem"
+                show-value
+                show-progress
+                animated
               >
-                <h1 class="m5">P{{index}} : {{plan_times}}</h1>
-              </h1>
+                <b-progress-bar
+                  v-for="(plan_times, index) in plan_time"
+                  :key="index"
+                  :value="plan_times"
+                  :variant="index % 5 === 0 ? 'warning' : index % 4 === 0 ? 'success' : index % 3 === 0 ? 'danger' : index % 2 === 0 ? 'primary' : index % 1 === 0 ? 'secondary' : 'dark'"
+                >
+                  <strong>{{plan_times}}</strong>
+                </b-progress-bar>
+              </b-progress>
+              <br />
             </b-col>
-            <b-col></b-col>
+            <b-col cols="1"></b-col>
           </b-row>
         </div>
       </div>
@@ -60,7 +70,7 @@
         <div>
           <b-row class="text-center">
             <b-col></b-col>
-            <b-col cols="8">
+            <!-- <b-col cols="8">
               <br />
               <b-progress
                 class="mt-2"
@@ -80,7 +90,7 @@
                 </b-progress-bar>
               </b-progress>
               <br />
-            </b-col>
+            </b-col> -->
             <b-col></b-col>
           </b-row>
         </div>
@@ -88,19 +98,19 @@
           <b-row class="text-center">
             <b-col>
               <br />
-              <label class="layoutPA">
-                <label class="m5">
+              <div class="layoutPA">
+                <div class="m5 fontPA">
                   ACTUAL :
-                  <label id="s_actual">{{S_actual}}</label>
-                </label>
-              </label>
+                </div>
+                <div id="s_actual" class="m5 fontPA">{{S_actual}}</div>
+              </div>
             </b-col>
             <b-col cols="8">
               <br />
               <b-progress
                 class="mt-2"
                 :max="S_plan"
-                height="4rem"
+                height="5.5rem"
                 show-value
                 show-progress
                 animated
@@ -116,7 +126,7 @@
               </b-progress>
               <br />
             </b-col>
-            <b-col>
+            <b-col cols="1">
               <!-- <div id="traffic-light">
                   <input type="radio" name="traffic-light-color" id="color1" value="color1" />
                   <input type="radio" name="traffic-light-color" id="color2" value="color2"/>
@@ -125,7 +135,7 @@
             </b-col>
           </b-row>
         </div>
-        <div class="layoutButton">
+        <!-- <div class="layoutButton">
           <b-row class="text-center">
             <b-col class="start" cols="3.5">
               <br />
@@ -147,10 +157,10 @@
             </b-col>
             <br />
           </b-row>
-        </div>
+        </div> -->
         <br />
         <!-- <button v-on:click="Audio5Min ()">Play</button>
-        <button v-on:click="Audio3Min ()">Play</button>-->
+        <button v-on:click="Audio3Min ()">Play</button> -->
         <div class="layoutButton">
           <b-row class="text-center">
             <b-col cols="5">
@@ -205,20 +215,26 @@ export default {
     }
   },
   created () {
+    console.log('test')
     let vm = this
     vm.S_plan = 0
     vm.S_actual = 0
     const waitConnect = setInterval(() => {
+      console.log('test2')
       if (connection.readyState === 1) {
         connection.send(
           JSON.stringify({ protocol: 'change_page', data: { page: 'C1' } })
         )
+        console.log('test3')
         clearInterval(waitConnect)
+        console.log('test4')
       }
     }, 100)
     connection.onmessage = function (e) {
+      console.log('test5')
       let res = JSON.parse(e.data)
       if (res.protocol === 'pace_maker_info') {
+        console.log('test6')
         vm.getData(res)
       }
     }
@@ -265,87 +281,27 @@ export default {
 
       if (this.status === 'NO_WORKING') {
         // no light
-        setNolight()
+        // this.setNolight()
         this.warning_5_mins = false
         this.warning_3_mins = false
         this.warning_delay = false
       } else if (this.status === 'WORKING') {
         //  green
-        setGreen()
+        // this.setGreen()
       } else if (this.status === 'WARNING') {
         //  yellow
-        setYellow()
+        // this.setYellow()
       } else if (this.status === 'DELAY') {
         //  red
-        setRed()
+        // setRed()
       } else if (this.status === 'NEED_HELP') {
         //  yellow
-        setYellow()
+        // this.setYellow()
         document.getElementById('btnConfirmHelp').disabled = false
         document.getElementById('btnNeedHelp').disabled = true
       } else if (this.status === 'CONFIRM_HELP') {
         //  green
-        setGreen()
-      }
-      function setRed () {
-        console.log('red')
-        document.getElementById('div_main').style.backgroundColor = '#FF0000'
-        // document.getElementById('color1').style.animation = '1s step-end infinite'
-        // document.getElementById('color1').style.backgroundColor = '#FF0000'
-        // document.getElementById('color1').style.boxShadow = '0 0 6em #ff3333'
-
-        // document.getElementById('color2').style.animation = '1s step-end infinite'
-        // document.getElementById('color2').style.backgroundColor = '#5e5e00'
-        // document.getElementById('color2').style.boxShadow = '0 0 0em transparent'
-
-        // document.getElementById('color3').style.animation = '1s step-end infinite'
-        // document.getElementById('color3').style.backgroundColor = '#005f00'
-        // document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
-      }
-      function setGreen () {
-        console.log('green')
-        document.getElementById('div_main').style.backgroundColor = '#00ff00'
-        // document.getElementById('color3').style.animation = '1s step-end infinite'
-        // document.getElementById('color3').style.backgroundColor = '#00FF00'
-        // document.getElementById('color3').style.boxShadow = '0 0 6em #33ff33'
-
-        // document.getElementById('color2').style.animation = '1s step-end infinite'
-        // document.getElementById('color2').style.backgroundColor = '#5e5e00'
-        // document.getElementById('color2').style.boxShadow = '0 0 0em transparent'
-
-        // document.getElementById('color1').style.animation = '1s step-end infinite'
-        // document.getElementById('color1').style.backgroundColor = '#570000'
-        // document.getElementById('color1').style.boxShadow = '0 0 0em transparent'
-      }
-      function setYellow () {
-        console.log('yellow')
-        document.getElementById('div_main').style.backgroundColor = '#FFFF00'
-        // document.getElementById('color2').style.animation = '1s step-end infinite'
-        // document.getElementById('color2').style.backgroundColor = '#FFFF00'
-        // document.getElementById('color2').style.boxShadow = '0 0 6em #ffff33'
-
-        // document.getElementById('color1').style.animation = '1s step-end infinite'
-        // document.getElementById('color1').style.backgroundColor = '#570000'
-        // document.getElementById('color1').style.boxShadow = '0 0 0em transparent'
-
-        // document.getElementById('color3').style.animation = '1s step-end infinite'
-        // document.getElementById('color3').style.backgroundColor = '#005f00'
-        // document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
-      }
-      function setNolight () {
-        console.log('nolight')
-        document.getElementById('div_main').style.backgroundColor = '#FFFFFF'
-        // document.getElementById('color2').style.animation = '1s step-end infinite'
-        // document.getElementById('color2').style.backgroundColor = '#5e5e00'
-        // document.getElementById('color2').style.boxShadow = '0 0 0em transparent'
-
-        // document.getElementById('color1').style.animation = '1s step-end infinite'
-        // document.getElementById('color1').style.backgroundColor = '#570000'
-        // document.getElementById('color1').style.boxShadow = '0 0 0em transparent'
-
-        // document.getElementById('color3').style.animation = '1s step-end infinite'
-        // document.getElementById('color3').style.backgroundColor = '#005f00'
-        // document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
+        // this.setGreen()
       }
     },
     sendConfirmHelp () {
@@ -385,6 +341,65 @@ export default {
       let delaysound = document.getElementById('delaysound')
       delaysound.play()
       console.log('delaysound')
+    },
+    setRed () {
+      console.log('red')
+      document.getElementById('div_main').style.backgroundColor = '#FF0000'
+      // document.getElementById('color1').style.animation = '1s step-end infinite'
+      // document.getElementById('color1').style.backgroundColor = '#FF0000'
+      // document.getElementById('color1').style.boxShadow = '0 0 6em #ff3333'
+
+      // document.getElementById('color2').style.animation = '1s step-end infinite'
+      // document.getElementById('color2').style.backgroundColor = '#5e5e00'
+      // document.getElementById('color2').style.boxShadow = '0 0 0em transparent'
+      // document.getElementById('color3').style.animation = '1s step-end infinite'
+      // document.getElementById('color3').style.backgroundColor = '#005f00'
+      // document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
+    },
+    setGreen () {
+      console.log('green')
+      document.getElementById('div_main').style.backgroundColor = '#00ff00'
+      // document.getElementById('color3').style.animation = '1s step-end infinite'
+      // document.getElementById('color3').style.backgroundColor = '#00FF00'
+      // document.getElementById('color3').style.boxShadow = '0 0 6em #33ff33'
+
+      // document.getElementById('color2').style.animation = '1s step-end infinite'
+      // document.getElementById('color2').style.backgroundColor = '#5e5e00'
+      // document.getElementById('color2').style.boxShadow = '0 0 0em transparent'
+
+      // document.getElementById('color1').style.animation = '1s step-end infinite'
+      // document.getElementById('color1').style.backgroundColor = '#570000'
+      // document.getElementById('color1').style.boxShadow = '0 0 0em transparent'
+    },
+    setYellow () {
+      console.log('yellow')
+      document.getElementById('div_main').style.backgroundColor = '#FFFF00'
+      // document.getElementById('color2').style.animation = '1s step-end infinite'
+      // document.getElementById('color2').style.backgroundColor = '#FFFF00'
+      // document.getElementById('color2').style.boxShadow = '0 0 6em #ffff33'
+
+      // document.getElementById('color1').style.animation = '1s step-end infinite'
+      // document.getElementById('color1').style.backgroundColor = '#570000'
+      // document.getElementById('color1').style.boxShadow = '0 0 0em transparent'
+
+      // document.getElementById('color3').style.animation = '1s step-end infinite'
+      // document.getElementById('color3').style.backgroundColor = '#005f00'
+      // document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
+    },
+    setNolight () {
+      console.log('nolight')
+      document.getElementById('div_main').style.backgroundColor = '#FFFFFF'
+      // document.getElementById('color2').style.animation = '1s step-end infinite'
+      // document.getElementById('color2').style.backgroundColor = '#5e5e00'
+      // document.getElementById('color2').style.boxShadow = '0 0 0em transparent'
+
+      // document.getElementById('color1').style.animation = '1s step-end infinite'
+      // document.getElementById('color1').style.backgroundColor = '#570000'
+      // document.getElementById('color1').style.boxShadow = '0 0 0em transparent'
+
+      // document.getElementById('color3').style.animation = '1s step-end infinite'
+      // document.getElementById('color3').style.backgroundColor = '#005f00'
+      // document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
     }
   },
   directives: {
