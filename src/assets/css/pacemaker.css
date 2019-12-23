@@ -116,9 +116,9 @@ input#color3:checked {
   text-align: left;
   /* margin-left: 10px; */
   /* margin-top: 20px; */
-  padding-left: 50px;
-  padding-right: 50px;
-  /* padding-; */
+  /* padding-left: 50px;
+  padding-right: 50px; */
+  padding: 0;
 }
 .layoutVO {
   border: solid 15px #1f1762;

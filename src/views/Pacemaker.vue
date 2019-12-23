@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <b-container> -->
+    <b-container style="padding: 0;">
     <meta charset="utf-8" />
     <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport" />
     <audio id="fivemin">
@@ -203,12 +203,11 @@
             </b-col>
             <br />
           </b-row>
+          <br>
         </div>
-        <div></div>
-        <div></div>
       </div>
     </div>
-    <!-- </b-container> -->
+    </b-container>
   </div>
 </template>
 <script>

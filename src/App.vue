@@ -44,13 +44,13 @@ export default {
   color: #42b983;
 }
 html, body {
-  height: 100%;
+  height: auto;
   margin: 0;
   padding: 0;
 }
 #app {
   display: flex;
-  height: 100%;
+  height: auto;
   /* justify-content: center;
   align-items: center; */
   flex-direction: column;
