@@ -1,5 +1,6 @@
 <template>
-  <div id="div_main" class="full-height">
+  <div>
+    <!-- <b-container> -->
     <meta charset="utf-8" />
     <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport" />
     <audio id="fivemin">
@@ -11,42 +12,52 @@
     <audio id="delaysound">
       <source src="@/assets/audio/delay.mp3" type="audio/mpeg" />
     </audio>
+    <br/>
     <div class="layoutP">
       <div style="text-align:center">
         <b-row class="text-center">
-          <b-col cols="1"></b-col>
-          <b-col class="layoutVO" cols="5">
+          <!-- <b-col cols="1"></b-col> -->
+          <b-col class="layoutVO" cols="6">
             <br />
             <div class="fontVO">VIN : {{ VIN }}</div>
             <br />
           </b-col>
-          <b-col class="layoutVO" cols="5">
+          <b-col class="layoutVO" cols="6">
             <br />
             <div class="fontVO">OPTION GROUP : {{OPTION_GROUP}}</div >
             <br />
           </b-col>
-          <b-col cols="1"></b-col>
+          <!-- <b-col cols="1"></b-col> -->
           <br />
         </b-row>
       </div>
     </div>
+    <br/>
     <div class="layoutP">
       <div>
-        <div>
+        <!-- <div> -->
           <b-row class="text-center">
-            <b-col>
-              <div class="layoutPA">
+            <!-- <b-col> -->
+              <!-- <div class="layoutPA">
                 <div class="m5 fontPA">
                   PLAN :
                 </div>
                 <div id="s_plan" class=" m5 fontPA">{{S_plan}}</div>
+              </div> -->
+            <!-- </b-col> -->
+            <b-col cols="12">
+              <div>
+                <div class="layoutPA">
+                  <div class="m5 fontPA">
+                    PLAN :
+                  </div>
+                  <div id="s_plan" class=" m5 fontPA">{{S_plan}}</div>
+                </div>
               </div>
-            </b-col>
-            <b-col cols="8">
               <b-progress
                 class="mt-2"
                 :max="S_plan"
-                height="5.5rem"
+                height="8rem"
                 show-value
                 show-progress
                 animated
@@ -62,14 +73,14 @@
               </b-progress>
               <br />
             </b-col>
-            <b-col cols="1"></b-col>
+            <!-- <b-col cols="1"></b-col> -->
           </b-row>
-        </div>
+        <!-- </div> -->
       </div>
       <div>
-        <div>
-          <b-row class="text-center">
-            <b-col></b-col>
+        <!-- <div> -->
+          <!-- <b-row class="text-center"> -->
+            <!-- <b-col></b-col> -->
             <!-- <b-col cols="8">
               <br />
               <b-progress
@@ -91,50 +102,64 @@
               </b-progress>
               <br />
             </b-col> -->
-            <b-col></b-col>
-          </b-row>
-        </div>
-        <div>
+            <!-- <b-col></b-col> -->
+          <!-- </b-row> -->
+        <!-- </div> -->
+        <!-- <div> -->
           <b-row class="text-center">
-            <b-col>
+            <!-- <b-col cols="1"> -->
               <br />
-              <div class="layoutPA">
+              <!-- <div class="layoutPA">
+                <div class="m5 fontPA">
+                  ACTUAL :
+                </div>
+                <div id="s_actual" class="m5 fontPA">{{S_actual}}</div>
+              </div> -->
+            <!-- </b-col> -->
+            <b-col cols="12">
+              <br />
+              <div>
+                <div class="layoutPA">
                 <div class="m5 fontPA">
                   ACTUAL :
                 </div>
                 <div id="s_actual" class="m5 fontPA">{{S_actual}}</div>
               </div>
-            </b-col>
-            <b-col cols="8">
-              <br />
+              </div>
               <b-progress
                 class="mt-2"
                 :max="S_plan"
-                height="5.5rem"
+                height="8rem"
                 show-value
                 show-progress
                 animated
               >
-                <b-progress-bar
+                <!-- <b-progress-bar
                   v-for="(actual_times, index) in actual_time"
                   :key="index"
                   :value="actual_times"
                   :variant="index % 5 === 0 ? 'warning' : index % 4 === 0 ? 'success' : index % 3 === 0 ? 'danger' : index % 2 === 0 ? 'primary' : index % 1 === 0 ? 'secondary' : 'dark'"
+                > -->
+                <b-progress-bar
+                  v-for="(actual_times, index) in actual_time"
+                  :key="index"
+                  :value="actual_times"
+                  :variant="progress_color"
                 >
                   <strong>{{actual_times}}</strong>
                 </b-progress-bar>
               </b-progress>
               <br />
             </b-col>
-            <b-col cols="1">
+            <!-- <b-col cols="1"> -->
               <!-- <div id="traffic-light">
                   <input type="radio" name="traffic-light-color" id="color1" value="color1" />
                   <input type="radio" name="traffic-light-color" id="color2" value="color2"/>
                   <input type="radio" name="traffic-light-color" id="color3" value="color3" />
               </div>-->
-            </b-col>
+            <!-- </b-col> -->
           </b-row>
-        </div>
+        <!-- </div> -->
         <!-- <div class="layoutButton">
           <b-row class="text-center">
             <b-col class="start" cols="3.5">
@@ -163,22 +188,18 @@
         <button v-on:click="Audio3Min ()">Play</button> -->
         <div class="layoutButton">
           <b-row class="text-center">
-            <b-col cols="5">
+            <b-col cols="6">
               <b-button
                 id="btnConfirmHelp"
                 class="buttonConfirmHelp"
-                v-on:click="sendConfirmHelp ()"
-                variant="success"
-              >คอนเฟิร์มการช่วยเเหลือ</b-button>
+                v-on:click="sendConfirmHelp ()">คอนเฟิร์มการช่วยเเหลือ</b-button>
             </b-col>
-            <b-col cols="2"></b-col>
-            <b-col cols="5">
+            <!-- <b-col cols="1"></b-col> -->
+            <b-col cols="6">
               <b-button
                 id="btnNeedHelp"
                 class="buttonNeedHelp"
-                v-on:click="sendNeedHelp ()"
-                variant="warning"
-              >ต้องการความช่วยเหลือ</b-button>
+                v-on:click="sendNeedHelp ()">ต้องการความช่วยเหลือ</b-button>
             </b-col>
             <br />
           </b-row>
@@ -187,6 +208,7 @@
         <div></div>
       </div>
     </div>
+    <!-- </b-container> -->
   </div>
 </template>
 <script>
@@ -206,6 +228,7 @@ export default {
       finish_time: '',
       diff: '',
       status: '',
+      progress_color: '',
       max: 0,
       S_plan: 0,
       S_actual: 0,
@@ -276,26 +299,32 @@ export default {
       if (this.status === 'NO_WORKING') {
         // no light
         // this.setNolight()
+        this.progress_color = ''
         this.warning_5_mins = false
         this.warning_3_mins = false
         this.warning_delay = false
       } else if (this.status === 'WORKING') {
         //  green
         // this.setGreen()
+        this.progress_color = 'success'
       } else if (this.status === 'WARNING') {
         //  yellow
         // this.setYellow()
+        this.progress_color = 'warning'
       } else if (this.status === 'DELAY') {
         //  red
         // setRed()
+        this.progress_color = 'danger'
       } else if (this.status === 'NEED_HELP') {
         //  yellow
         // this.setYellow()
+        this.progress_color = 'warning'
         document.getElementById('btnConfirmHelp').disabled = false
         document.getElementById('btnNeedHelp').disabled = true
       } else if (this.status === 'CONFIRM_HELP') {
         //  green
         // this.setGreen()
+        this.progress_color = 'success'
       }
     },
     sendConfirmHelp () {
