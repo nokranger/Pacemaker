@@ -215,6 +215,7 @@
 export default {
   data () {
     return {
+      bay: '',
       vin_no: '',
       urn: '',
       option_group: '',
@@ -239,6 +240,7 @@ export default {
     }
   },
   created () {
+    this.bay = this.$route.query.bay
     this.connect()
     // setInterval(() => {
     //   if (this.connection.readyState === 1) {
@@ -257,7 +259,7 @@ export default {
       this.connection.onopen = function () {
         // subscribe to some channels
         vm.connection.send(
-          JSON.stringify({ protocol: 'change_page', data: { page: 'C1' } })
+          JSON.stringify({ protocol: 'change_page', data: { page: vm.bay } })
         )
       }
 
@@ -362,7 +364,7 @@ export default {
       this.connection.send(
         JSON.stringify({
           protocol: 'pace_maker_status',
-          data: { bay: 'C1', status: 'CONFIRM_HELP' }
+          data: { bay: this.bay, status: 'CONFIRM_HELP' }
         })
       ) // ส่ง Data ไปที่ Server
     },
@@ -373,7 +375,7 @@ export default {
       this.connection.send(
         JSON.stringify({
           protocol: 'pace_maker_status',
-          data: { bay: 'C1', status: 'NEED_HELP' }
+          data: { bay: this.bay, status: 'NEED_HELP' }
         })
       ) // ส่ง Data ไปที่ Server
     },
