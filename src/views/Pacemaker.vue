@@ -57,7 +57,7 @@
               <b-progress
                 class="mt-2"
                 :max="sum_plan"
-                height="8rem"
+                height="6rem"
                 show-value
                 show-progress
                 animated
@@ -117,7 +117,7 @@
               </div> -->
             <!-- </b-col> -->
             <b-col cols="12">
-              <br />
+              <!-- <br /> -->
               <div>
                 <div class="layoutPA">
                 <div class="m5 fontPA">
@@ -129,7 +129,7 @@
               <b-progress
                 class="mt-2"
                 :max="sum_plan"
-                height="8rem"
+                height="6rem"
                 show-value
                 show-progress
                 animated
