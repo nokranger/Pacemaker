@@ -19,12 +19,12 @@
           <!-- <b-col cols="1"></b-col> -->
           <b-col class="layoutVO" cols="6">
             <br />
-            <div class="fontVO">VIN : {{ VIN }}</div>
+            <div class="fontVO">VIN : {{ vin_no }}</div>
             <br />
           </b-col>
           <b-col class="layoutVO" cols="6">
             <br />
-            <div class="fontVO">OPTION GROUP : {{OPTION_GROUP}}</div >
+            <div class="fontVO">OPTION GROUP : {{option_group}}</div >
             <br />
           </b-col>
           <!-- <b-col cols="1"></b-col> -->
@@ -42,7 +42,7 @@
                 <div class="m5 fontPA">
                   PLAN :
                 </div>
-                <div id="s_plan" class=" m5 fontPA">{{S_plan}}</div>
+                <div id="sum_plan" class=" m5 fontPA">{{sum_plan}}</div>
               </div> -->
             <!-- </b-col> -->
             <b-col cols="12">
@@ -51,12 +51,12 @@
                   <div class="m5 fontPA">
                     PLAN :
                   </div>
-                  <div id="s_plan" class=" m5 fontPA">{{S_plan}}</div>
+                  <div id="sum_plan" class=" m5 fontPA">{{str_sum_plan}}</div>
                 </div>
               </div>
               <b-progress
                 class="mt-2"
-                :max="S_plan"
+                :max="sum_plan"
                 height="8rem"
                 show-value
                 show-progress
@@ -85,7 +85,7 @@
               <br />
               <b-progress
                 class="mt-2"
-                :max="S_plan"
+                :max="sum_plan"
                 height="4rem"
                 show-value
                 show-progress
@@ -113,7 +113,7 @@
                 <div class="m5 fontPA">
                   ACTUAL :
                 </div>
-                <div id="s_actual" class="m5 fontPA">{{S_actual}}</div>
+                <div id="sum_actual" class="m5 fontPA">{{sum_actual}}</div>
               </div> -->
             <!-- </b-col> -->
             <b-col cols="12">
@@ -123,12 +123,12 @@
                 <div class="m5 fontPA">
                   ACTUAL :
                 </div>
-                <div id="s_actual" class="m5 fontPA">{{S_actual}}</div>
+                <div id="sum_actual" class="m5 fontPA">{{str_sum_actual}}</div>
               </div>
               </div>
               <b-progress
                 class="mt-2"
-                :max="S_plan"
+                :max="sum_plan"
                 height="8rem"
                 show-value
                 show-progress
@@ -176,7 +176,7 @@
             </b-col>
             <b-col class="diff" cols="3.5">
               <br />
-              <label class="m5">Diff : {{S_plan - S_actual}}</label>
+              <label class="m5">Diff : {{sum_plan - sum_actual}}</label>
               <br />
               <br />
             </b-col>
@@ -211,14 +211,13 @@
   </div>
 </template>
 <script>
-import { connection } from './connection'
+// import { connection } from './connection'
 export default {
   data () {
     return {
-      VIN: '',
-      URN: '',
-      OPTION_GROUP: '',
-      value: [],
+      vin_no: '',
+      urn: '',
+      option_group: '',
       plan_time: [],
       actual_time: [],
       max_plan_time: 0,
@@ -229,38 +228,63 @@ export default {
       status: '',
       progress_color: '',
       max: 0,
-      S_plan: 0,
-      S_actual: 0,
+      sum_plan: 0,
+      str_sum_plan: '',
+      sum_actual: 0,
+      str_sum_actual: '',
       warning_5_mins: false,
       warning_3_mins: false,
-      warning_delay: false
+      warning_delay: false,
+      connection: null
     }
   },
   created () {
-    let vm = this
-    vm.S_plan = 0
-    vm.S_actual = 0
-    const waitConnect = setInterval(() => {
-      if (connection.readyState === 1) {
-        connection.send(
-          JSON.stringify({ protocol: 'change_page', data: { page: 'C1' } })
-        )
-        clearInterval(waitConnect)
-      }
-    }, 100)
-    connection.onmessage = function (e) {
-      let res = JSON.parse(e.data)
-      if (res.protocol === 'pace_maker_info') {
-        vm.getData(res)
-      }
-    }
+    this.connect()
+    // setInterval(() => {
+    //   if (this.connection.readyState === 1) {
+    //     this.connection.send(
+    //       JSON.stringify({ protocol: 'change_page', data: { page: 'C1' } })
+    //     )
+    //   }
+    // }, 1000)
   },
   updated () {},
   methods: {
+    connect () {
+      let vm = this
+
+      this.connection = new WebSocket('ws://localhost:1308')
+      this.connection.onopen = function () {
+        // subscribe to some channels
+        vm.connection.send(
+          JSON.stringify({ protocol: 'change_page', data: { page: 'C1' } })
+        )
+      }
+
+      this.connection.onmessage = function (e) {
+        // console.log('Message:', e.data)
+        let res = JSON.parse(e.data)
+        if (res.protocol === 'pace_maker_info') {
+          vm.getData(res)
+        }
+      }
+
+      this.connection.onclose = function (e) {
+        console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason)
+        setTimeout(function () {
+          vm.connect()
+        }, 1000)
+      }
+
+      this.connection.onerror = function (err) {
+        console.error('Socket encountered error: ', err.message, 'Closing socket')
+        vm.connection.close()
+      }
+    },
     getData (res) {
       let data = res.data
-      this.VIN = data.info.vin_no
-      this.OPTION_GROUP = data.info.option_group
+      this.vin_no = data.info.vin_no
+      this.option_group = data.info.option_group
       this.start_time = data.info.start
       this.finish_time = data.info.finish
       this.diff = data.info.diff
@@ -276,19 +300,23 @@ export default {
       for (var j = 0; j < data.info.option_time_.length; j++) {
         sa = sa + data.info.option_time_[j]
       }
-      this.S_plan = sp
-      this.S_actual = sa
-
+      this.sum_plan = sp
+      this.sum_actual = sa
+      this.str_sum_plan = this.toHmmss(sp)
+      this.str_sum_actual = this.toHmmss(sa)
       if (this.status !== 'NO_WORKING') {
-        if (!this.warning_5_mins && this.S_plan - this.S_actual <= 5) {
-          this.Audio5Min()
-          this.warning_5_mins = true
-        } else if (!this.warning_3_mins && this.S_plan - this.S_actual <= 3) {
-          this.Audio3Min()
-          this.warning_3_mins = true
-        } else if (!this.warning_delay && this.S_plan <= this.S_actual) {
+        if (!this.warning_delay && this.sum_plan <= this.sum_actual) {
           this.AudioDelay()
           this.warning_delay = true
+          this.warning_3_mins = true
+          this.warning_5_mins = true
+        } else if (!this.warning_3_mins && this.sum_plan - this.sum_actual <= 3) {
+          this.Audio3Min()
+          this.warning_3_mins = true
+          this.warning_5_mins = true
+        } else if (!this.warning_5_mins && this.sum_plan - this.sum_actual <= 5) {
+          this.Audio5Min()
+          this.warning_5_mins = true
         }
       }
 
@@ -331,7 +359,7 @@ export default {
       // connection.onopen = function () {
       // จะทำงานเมื่อเชื่อมต่อสำเร็จ
       // console.log('error connect webSocket')
-      connection.send(
+      this.connection.send(
         JSON.stringify({
           protocol: 'pace_maker_status',
           data: { bay: 'C1', status: 'CONFIRM_HELP' }
@@ -342,7 +370,7 @@ export default {
       console.log('need help')
       // จะทำงานเมื่อเชื่อมต่อสำเร็จ
       // console.log('connect webSocket')
-      connection.send(
+      this.connection.send(
         JSON.stringify({
           protocol: 'pace_maker_status',
           data: { bay: 'C1', status: 'NEED_HELP' }
@@ -422,6 +450,14 @@ export default {
       // document.getElementById('color3').style.animation = '1s step-end infinite'
       // document.getElementById('color3').style.backgroundColor = '#005f00'
       // document.getElementById('color3').style.boxShadow = '0 0 0em transparent'
+    },
+    toHmmss (sec) {
+      var hours = Math.floor(sec / 3600)
+      var minutes = Math.floor((sec - (hours * 3600)) / 60)
+      var seconds = sec - (hours * 3600) - (minutes * 60)
+      if (minutes < 10) { minutes = '0' + minutes }
+      if (seconds < 10) { seconds = '0' + seconds }
+      return hours + ':' + minutes + ':' + seconds
     }
   },
   directives: {
