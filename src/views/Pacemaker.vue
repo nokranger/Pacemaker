@@ -312,11 +312,11 @@ export default {
           this.warning_delay = true
           this.warning_3_mins = true
           this.warning_5_mins = true
-        } else if (!this.warning_3_mins && this.sum_plan - this.sum_actual <= 3) {
+        } else if (!this.warning_3_mins && this.sum_plan - this.sum_actual <= 180) {
           this.Audio3Min()
           this.warning_3_mins = true
           this.warning_5_mins = true
-        } else if (!this.warning_5_mins && this.sum_plan - this.sum_actual <= 5) {
+        } else if (!this.warning_5_mins && this.sum_plan - this.sum_actual <= 300) {
           this.Audio5Min()
           this.warning_5_mins = true
         }
