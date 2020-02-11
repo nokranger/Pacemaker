@@ -381,16 +381,19 @@ export default {
     },
     Audio5Min () {
       let fivemin = document.getElementById('fivemin')
+      fivemin.muted = true
       fivemin.play()
       console.log('fivemin')
     },
     Audio3Min () {
       let threemin = document.getElementById('threemin')
+      threemin.muted = true
       threemin.play()
       console.log('threemin')
     },
     AudioDelay () {
       let delaysound = document.getElementById('delaysound')
+      delaysound.muted = true
       delaysound.play()
       console.log('delaysound')
     },
@@ -460,26 +463,6 @@ export default {
       if (minutes < 10) { minutes = '0' + minutes }
       if (seconds < 10) { seconds = '0' + seconds }
       return hours + ':' + minutes + ':' + seconds
-    }
-  },
-  directives: {
-    rainbow: {
-      bind (el, bind, vnode) {
-        if (bind.value % 5 === 0) {
-          el.style.background = '#ffc107'
-        } else if (bind.value % 4 === 0) {
-          el.style.background = '#28a745'
-        } else if (bind.value % 3 === 0) {
-          el.style.background = '#dc3545'
-        } else if (bind.value % 2 === 0) {
-          el.style.background = '#007bff'
-        } else if (bind.value % 1 === 0) {
-          el.style.background = '#6c757d'
-        } else {
-          el.style.background = '#343a40'
-        }
-        el.style.color = 'white'
-      }
     }
   }
 }
