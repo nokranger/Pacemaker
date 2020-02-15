@@ -56,10 +56,9 @@
               </div>
               <br />
               <b-progress
-                class="md-3"
+                class="mb-3"
                 :max="sum_plan"
                 height="6rem"
-                show-progress
                 animated
               >
                 <!-- <b-progress-bar
@@ -74,7 +73,7 @@
                   :value="actual_times"
                   :variant="progress_color"
                 >
-                  <strong>{{actual_times}}</strong>
+                  <!-- <strong>{{actual_times}}</strong> -->
                 </b-progress-bar>
               </b-progress>
               <br />
