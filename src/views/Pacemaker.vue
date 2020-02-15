@@ -54,24 +54,38 @@
                   <div id="sum_plan" class=" m5 fontPA">{{str_sum_plan}}</div>
                 </div>
               </div>
+              <br />
               <b-progress
-                class="mt-2"
+                class="md-3"
                 :max="sum_plan"
                 height="6rem"
-                show-value
                 show-progress
                 animated
               >
-                <b-progress-bar
-                  v-for="(plan_times, index) in plan_time"
+                <!-- <b-progress-bar
+                  v-for="(actual_times, index) in actual_time"
                   :key="index"
-                  :value="plan_times"
+                  :value="actual_times"
                   :variant="index % 5 === 0 ? 'warning' : index % 4 === 0 ? 'success' : index % 3 === 0 ? 'danger' : index % 2 === 0 ? 'primary' : index % 1 === 0 ? 'secondary' : 'dark'"
+                > -->
+                <b-progress-bar
+                  v-for="(actual_times, index) in actual_time"
+                  :key="index"
+                  :value="actual_times"
+                  :variant="progress_color"
                 >
-                  <strong>{{plan_times}}</strong>
+                  <strong>{{actual_times}}</strong>
                 </b-progress-bar>
               </b-progress>
               <br />
+              <div>
+                <div class="layoutPA">
+                <div class="m5 fontPA">
+                  ACTUAL :
+                </div>
+                <div id="sum_actual" class="m5 fontPA">{{str_sum_actual}}</div>
+              </div>
+              </div>
             </b-col>
             <!-- <b-col cols="1"></b-col> -->
           </b-row>
@@ -118,37 +132,14 @@
             <!-- </b-col> -->
             <b-col cols="12">
               <!-- <br /> -->
-              <div>
+              <!-- <div>
                 <div class="layoutPA">
                 <div class="m5 fontPA">
                   ACTUAL :
                 </div>
                 <div id="sum_actual" class="m5 fontPA">{{str_sum_actual}}</div>
               </div>
-              </div>
-              <b-progress
-                class="mt-2"
-                :max="sum_plan"
-                height="6rem"
-                show-value
-                show-progress
-                animated
-              >
-                <!-- <b-progress-bar
-                  v-for="(actual_times, index) in actual_time"
-                  :key="index"
-                  :value="actual_times"
-                  :variant="index % 5 === 0 ? 'warning' : index % 4 === 0 ? 'success' : index % 3 === 0 ? 'danger' : index % 2 === 0 ? 'primary' : index % 1 === 0 ? 'secondary' : 'dark'"
-                > -->
-                <b-progress-bar
-                  v-for="(actual_times, index) in actual_time"
-                  :key="index"
-                  :value="actual_times"
-                  :variant="progress_color"
-                >
-                  <strong>{{actual_times}}</strong>
-                </b-progress-bar>
-              </b-progress>
+              </div> -->
               <br />
             </b-col>
             <!-- <b-col cols="1"> -->
