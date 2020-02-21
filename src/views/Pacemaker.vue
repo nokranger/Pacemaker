@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta content="width=device-width,initial-scale=1,minimal-ui" name="viewport" />
     <audio id="fivemin">
-      <source src="@/assets/audio/5min.mp3" type="audio/mpeg" />
+      <source src="@/assets/audio/5min.mp3" type="audio/mpeg" muted />
     </audio>
     <audio id="threemin">
-      <source src="@/assets/audio/3min.mp3" type="audio/mpeg" />
+      <source src="@/assets/audio/3min.mp3" type="audio/mpeg" muted />
     </audio>
     <audio id="delaysound">
       <source src="@/assets/audio/delay.mp3" type="audio/mpeg" />
@@ -371,19 +371,19 @@ export default {
     },
     Audio5Min () {
       let fivemin = document.getElementById('fivemin')
-      fivemin.muted = true
+      fivemin.muted = false
       fivemin.play()
       console.log('fivemin')
     },
     Audio3Min () {
       let threemin = document.getElementById('threemin')
-      threemin.muted = true
+      threemin.muted = false
       threemin.play()
       console.log('threemin')
     },
     AudioDelay () {
       let delaysound = document.getElementById('delaysound')
-      delaysound.muted = true
+      delaysound.muted = false
       delaysound.play()
       console.log('delaysound')
     },
